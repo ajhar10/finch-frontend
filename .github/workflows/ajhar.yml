@@ -16,23 +16,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js v16 from NVM
+      - name: Set up Node.js v18 from NVM
         run: |
           export NVM_DIR="$HOME/.nvm"
           source "$NVM_DIR/nvm.sh"
-          nvm install 16
-          nvm use 16
+          nvm install 18
+          nvm use 18
           node -v
           yarn -v
 
-      - name: Remove package-lock.json to avoid conflicts
-        run: rm -f package-lock.json
+      - name: Clean up lockfiles (optional, prevents conflicts)
+        run: rm -f package-lock.json yarn.lock
 
       - name: Install Application Dependencies with Yarn
         run: |
           export NVM_DIR="$HOME/.nvm"
           source "$NVM_DIR/nvm.sh"
-          nvm use 16
+          nvm use 18
           yarn install
 
       - name: Delete Existing PM2 Process (if exists)
@@ -43,5 +43,5 @@ jobs:
         run: |
           export NVM_DIR="$HOME/.nvm"
           source "$NVM_DIR/nvm.sh"
-          nvm use 16
+          nvm use 18
           pm2 start yarn --interpreter bash --name="node-js" -- serve
