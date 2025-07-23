@@ -25,10 +25,17 @@ jobs:
           node -v
           yarn -v
 
-      - name: Clean up lockfiles (optional, prevents conflicts)
+      - name: Install PM2 globally
+        run: |
+          export NVM_DIR="$HOME/.nvm"
+          source "$NVM_DIR/nvm.sh"
+          nvm use 18
+          npm install -g pm2
+
+      - name: Clean up lockfiles (optional)
         run: rm -f package-lock.json yarn.lock
 
-      - name: Install Application Dependencies with Yarn
+      - name: Install Application Dependencies
         run: |
           export NVM_DIR="$HOME/.nvm"
           source "$NVM_DIR/nvm.sh"
@@ -37,6 +44,9 @@ jobs:
 
       - name: Delete Existing PM2 Process (if exists)
         run: |
+          export NVM_DIR="$HOME/.nvm"
+          source "$NVM_DIR/nvm.sh"
+          nvm use 18
           pm2 delete node-js || true
 
       - name: Start Application with PM2
